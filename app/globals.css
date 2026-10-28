@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+@layer components {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .center {
+    @apply flex flex-col items-center justify-center;
+  }
+}
+
+.hover {
+  position: relative;
+}
+.hover::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  border-radius: 5px;
+  height: 0.05rem;
+  bottom: 2px;
+  left: 0;
+  background: #bb9af7;
+  transform-origin: bottom right;
+  transition: transform 0.15s ease-out;
+}
+.hover:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
