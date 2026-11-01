@@ -34,7 +34,7 @@ const works = [
       },
       {
         title: "Sentiments over Post-Revolution Street Wall Arts in Dhaka",
-        org: "Supervisor: Dr. A.B.M. Alim Al Islam",
+        org: "Supervisor: Dr. A.B.M. Alim Al Islam, Professor, BUET",
         period: "Sep 2024 - Present",
         points: [
           "Investigating public sentiment and recurring themes in the street wall art that emerged across Dhaka after the revolution.",
