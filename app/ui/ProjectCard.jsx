@@ -10,7 +10,12 @@ const ProjectCard = ({ project }) => {
   return (
     <div>
       <Link href={link} className="block w-full rounded-lg shadow bg-magenta">
-        <img className="w-full rounded-lg" src={image} alt={title} />
+        {/* Fixed 16:10 frame so cards line up whatever the image's size */}
+        <img
+          className="w-full aspect-[16/10] object-cover rounded-lg"
+          src={image}
+          alt={title}
+        />
       </Link>
       <div className="text-center my-4">
         <Link href={link} className="text-xl font-semibold hover">

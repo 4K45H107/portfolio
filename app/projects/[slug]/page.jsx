@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
-import { IoArrowBack } from "react-icons/io5";
+import { IoArrowBack, IoPlay } from "react-icons/io5";
 import { getProject, projects } from "../../data/projects";
 
 export const generateStaticParams = () =>
@@ -32,16 +32,23 @@ const ProjectPage = ({ params }) => {
         {project.subtitle} · {project.year}
       </p>
       {project.youtubeId ? (
-        <div className="not-prose my-8 aspect-video w-full overflow-hidden rounded-lg shadow">
-          <iframe
-            className="h-full w-full"
-            src={`https://www.youtube-nocookie.com/embed/${project.youtubeId}`}
-            title={`${project.title} demo video`}
-            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-            allowFullScreen
-            loading="lazy"
-          />
-        </div>
+        // A thumbnail that opens the video on YouTube. Embedded players can
+        // hit YouTube's "sign in to confirm you're not a bot" check, which
+        // the site can't control; youtube.com itself handles sign-in.
+        <a
+          href={project.preview}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Watch the ${project.title} demo on YouTube`}
+          className="not-prose group relative my-8 block overflow-hidden rounded-lg shadow"
+        >
+          <img src={project.image} alt={project.title} className="w-full" />
+          <span className="absolute inset-0 flex items-center justify-center bg-black-3/20 transition group-hover:bg-black-3/40">
+            <span className="flex h-20 w-20 items-center justify-center rounded-full bg-red text-black-3 shadow-lg transition group-hover:scale-110">
+              <IoPlay size={36} className="ml-1" />
+            </span>
+          </span>
+        </a>
       ) : (
         <img
           src={project.image}
