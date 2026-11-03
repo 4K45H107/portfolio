@@ -103,24 +103,82 @@ export const projects = [
   {
     slug: "realtime-chat",
     title: "Realtime Chat",
-    subtitle: "Real-time messaging with voice and video calls",
+    subtitle: "Group chat with WebRTC voice and video calls",
     year: "2024",
-    image: PLACEHOLDER_IMAGE, // TODO: add screenshot to public/images/
-    tech: ["React", "Firebase", "Zustand", "WebRTC"],
+    image: "/images/realtime-chat/chat.jpg",
+    tech: ["React", "Firebase", "Firestore", "WebRTC", "Zustand", "Vite"],
     github: "https://github.com/4K45H107/react-chat-app",
-    preview: "https://example.com", // TODO: live demo link
+    preview: "https://reactchat-ed5f2.web.app",
+    links: [
+      {
+        label: "Architecture Decisions",
+        href: "https://github.com/4K45H107/react-chat-app/tree/main/docs/adr",
+      },
+    ],
     description:
-      "A real-time messaging app built with React, Vite, Zustand and Firebase (Auth, Firestore, Storage). It supports 1:1 and group chats, media and voice messages, presence and typing indicators, and 1:1 voice and video calls over WebRTC, with participant-scoped security rules and paginated message history.",
+      "A real-time chat app with one-to-one and group messaging, photos and voice notes, and one-to-one voice and video calls over WebRTC. It runs on Firebase with no backend of its own, so Firestore security rules act as the authorization layer. I reworked the data model so no user ever writes another user's documents, locked the rules down field by field, and covered them with tests. CI runs every check on each pull request and deploys to Firebase Hosting from main.",
+    gallery: [
+      { src: "/images/realtime-chat/realtime.gif", caption: "Two accounts side by side: a message arrives instantly and the reply comes back" },
+      { src: "/images/realtime-chat/call.jpg", caption: "Video call over WebRTC with a picture-in-picture self view" },
+      { src: "/images/realtime-chat/group.jpg", caption: "Group chat with members, settings and shared photos" },
+      { src: "/images/realtime-chat/emoji.jpg", caption: "Emoji picker, loaded only when first opened" },
+      { src: "/images/realtime-chat/chat-light.jpg", caption: "Light theme" },
+      { src: "/images/realtime-chat/mobile.jpg", caption: "Chat list and conversation on a phone" },
+    ],
+    stack: [
+      { label: "UI", value: "React 18, Vite 5, Zustand, CSS with light and dark theme variables" },
+      { label: "Backend", value: "Firebase Auth, Firestore (offline cache), Cloud Storage, security rules" },
+      { label: "Calls", value: "WebRTC, Firestore signaling, Metered TURN relay" },
+      { label: "Testing", value: "Vitest, @firebase/rules-unit-testing, Firebase Emulator Suite" },
+      { label: "Tooling", value: "ESLint, size-limit, GitHub Actions" },
+      { label: "Hosting", value: "Firebase Hosting, deployed from main by GitHub Actions; nightly demo reset" },
+    ],
     sections: [
+      {
+        heading: "Try It Live",
+        items: [
+          "Nadia: nadia@reactchat.dev / Password123!",
+          "Tanvir: tanvir@reactchat.dev / Password123!",
+          "Open both accounts in two browsers to watch messages arrive live and to call each other. The demo data resets every night.",
+        ],
+      },
       {
         heading: "Features",
         items: [
-          "1:1 and group chats with edit, soft-delete and in-thread search",
-          "Live typing indicators and online/offline presence",
-          "Image messages, camera capture, voice notes and a shared photos grid",
-          "1:1 voice and video calls using WebRTC with Firestore signaling",
-          "Archive, mute, block, light/dark themes and browser notifications",
-          "Participant-scoped Firestore and Storage rules with upload rate limits",
+          "One-to-one and group chats with edit, soft delete, emoji, search inside a chat and paginated history",
+          "Live sidebar and thread, typing indicator, online status, read state and browser notifications",
+          "Photos, camera capture, voice notes and a shared photos panel",
+          "One-to-one voice and video calls with ringing, busy and missed states, logged in the thread",
+          "Block and unblock, mute and archive, leave a group, light and dark themes, phone layout",
+        ],
+      },
+      {
+        heading: "Architecture",
+        items: [
+          "No backend of its own: the React app talks to Firebase directly, and security rules are the authorization layer",
+          "The sidebar is a live query over the chats a user belongs to; each chat stores its last-message preview and a read marker per member",
+          "A message and its preview are written in one atomic batch; direct chats use the sorted pair of user ids, so each pair has exactly one chat",
+          "Calls exchange the WebRTC offer, answer and ICE candidates through Firestore; media flows peer to peer, or through a TURN relay on strict networks",
+          "Every key choice is written up as an architecture decision record in the repo",
+        ],
+      },
+      {
+        heading: "Security",
+        items: [
+          "Reworked a data model that let any signed-in user read or wipe other users' chat lists and see their emails",
+          "Members-only access to chats and messages; mute and archive settings private to their owner",
+          "Field-level validation and server timestamps, so nobody can write as someone else or backdate a message",
+          "Blocking, group membership and call states (only the callee can answer) enforced in the rules, not just the UI",
+          "36 rules tests on the Firestore emulator; run against the original rules, 18 of them fail",
+        ],
+      },
+      {
+        heading: "Performance & Quality",
+        items: [
+          "Split the bundle at sign-in: the first screen needs 84 KB of JavaScript (gzip) instead of 282 KB",
+          "The emoji picker and file uploads load on first use; size budgets in CI keep each chunk from growing back",
+          "11 integration tests drive the app's real services on seeded emulators: messaging, groups, calls, blocking and sign-up",
+          "Every pull request runs lint, unit tests, the build, size budgets and the emulator suites; main deploys automatically once they pass",
         ],
       },
     ],
