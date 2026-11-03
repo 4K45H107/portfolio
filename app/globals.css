@@ -21,23 +21,21 @@
   }
 }
 
+/* Animated underline drawn as a background on the text itself, so a title
+   that wraps gets an underline under every line (box-decoration-break:
+   clone gives each line its own copy). Grows from the left on hover and
+   retracts to the right on leave. */
 .hover {
-  position: relative;
+  background-image: linear-gradient(#bb9af7, #bb9af7);
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: 0% 0.08rem;
+  padding-bottom: 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 0.15s ease-out;
 }
-.hover::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  border-radius: 5px;
-  height: 0.05rem;
-  bottom: 2px;
-  left: 0;
-  background: #bb9af7;
-  transform-origin: bottom right;
-  transition: transform 0.15s ease-out;
-}
-.hover:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
+.hover:hover {
+  background-position: left bottom;
+  background-size: 100% 0.08rem;
 }

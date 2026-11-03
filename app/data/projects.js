@@ -208,40 +208,6 @@ export const projects = [
       },
     ],
   },
-  {
-    slug: "fms",
-    title: "FMS",
-    subtitle: "Football Managerial System",
-    year: "2021",
-    image: PLACEHOLDER_IMAGE, // TODO: add screenshot to public/images/
-    tech: ["JavaFX", "Java Networking", "Java Threading"],
-    github: "https://github.com/4K45H107", // TODO: repo link
-    preview: null,
-    description:
-      "A football club management game inspired by Football Manager, built with JavaFX, Java networking and multithreading to make running a club feel seamless.",
-    sections: [
-      {
-        heading: "Features",
-        items: [
-          "Buy and sell players between clubs",
-          "Bid for players on the transfer market",
-        ],
-      },
-    ],
-  },
-  {
-    slug: "dx-ball",
-    title: "DX-Ball",
-    subtitle: "Classic arcade game clone",
-    year: "2020",
-    image: PLACEHOLDER_IMAGE, // TODO: add screenshot to public/images/
-    tech: ["iGraphics", "OpenGL"],
-    github: "https://github.com/4K45H107", // TODO: repo link
-    preview: null,
-    description:
-      "A clone of the classic DX-Ball arcade game, built with the iGraphics library on OpenGL.",
-    sections: [],
-  },
 ];
 
 export const getProject = (slug) => projects.find((p) => p.slug === slug);
