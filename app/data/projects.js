@@ -1,8 +1,5 @@
 // All project info lives here. Cards on the home page and the detail pages
 // at /projects/<slug> are both generated from this list.
-// Anything marked TODO is placeholder data — search "TODO" to find it all.
-
-const PLACEHOLDER_IMAGE = "/images/placeholder.svg";
 
 export const projects = [
   {
@@ -190,10 +187,11 @@ export const projects = [
     title: "Wi-Fi Controlled Video Streaming Bot",
     subtitle: "Remote-controlled video streaming robot",
     year: "2023",
-    image: PLACEHOLDER_IMAGE, // TODO: add photo to public/images/
+    image: "/images/wifi-bot.jpg",
     tech: ["Raspberry Pi", "USB Webcam", "Wi-Fi Adapter"],
-    github: null, // TODO: repo link, if there is one
-    preview: "https://example.com", // TODO: live demo / video link
+    github: null,
+    preview: "https://www.youtube.com/watch?v=YTD1-tTNhGE",
+    youtubeId: "YTD1-tTNhGE",
     description:
       "A Raspberry Pi robot that streams live video from a USB webcam and is driven over Wi-Fi from a laptop or any other connected device.",
     sections: [

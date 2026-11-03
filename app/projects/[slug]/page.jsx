@@ -31,18 +31,34 @@ const ProjectPage = ({ params }) => {
       <p className="text-white-3/[0.8] -mt-2">
         {project.subtitle} · {project.year}
       </p>
-      <img
-        src={project.image}
-        alt={project.title}
-        className="w-full rounded-lg shadow my-8"
-      />
+      {project.youtubeId ? (
+        <div className="not-prose my-8 aspect-video w-full overflow-hidden rounded-lg shadow">
+          <iframe
+            className="h-full w-full"
+            src={`https://www.youtube-nocookie.com/embed/${project.youtubeId}`}
+            title={`${project.title} demo video`}
+            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowFullScreen
+            loading="lazy"
+          />
+        </div>
+      ) : (
+        <img
+          src={project.image}
+          alt={project.title}
+          className="w-full rounded-lg shadow my-8"
+        />
+      )}
 
       <p className="text-green font-semibold text-lg">Technologies Used</p>
       <p className="mb-6">{project.tech.join(", ")}</p>
 
       <div className="not-prose flex flex-wrap gap-x-6 gap-y-2">
         {[
-          project.preview && { label: "Live Demo", href: project.preview },
+          project.preview && {
+            label: project.youtubeId ? "Watch Demo" : "Live Demo",
+            href: project.preview,
+          },
           project.github && { label: "View Code", href: project.github },
           ...(project.links ?? []),
         ]

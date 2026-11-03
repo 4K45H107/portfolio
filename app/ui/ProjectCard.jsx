@@ -1,9 +1,10 @@
 import Link from "next/link";
 import React from "react";
-import { IoEye, IoLogoGithub } from "react-icons/io5";
+import { IoEye, IoLogoGithub, IoLogoYoutube } from "react-icons/io5";
 
 const ProjectCard = ({ project }) => {
-  const { slug, title, subtitle, year, image, tech, github, preview } = project;
+  const { slug, title, subtitle, year, image, tech, github, preview, youtubeId } =
+    project;
   const link = `/projects/${slug}`;
 
   return (
@@ -30,8 +31,12 @@ const ProjectCard = ({ project }) => {
             </Link>
           )}
           {preview && (
-            <Link target="_blank" href={preview} aria-label="Live demo">
-              <IoEye />
+            <Link
+              target="_blank"
+              href={preview}
+              aria-label={youtubeId ? "Demo video" : "Live demo"}
+            >
+              {youtubeId ? <IoLogoYoutube /> : <IoEye />}
             </Link>
           )}
         </div>
