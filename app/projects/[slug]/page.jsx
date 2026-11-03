@@ -58,6 +58,11 @@ const ProjectPage = ({ params }) => {
             </a>
           ))}
       </div>
+      {project.previewNotice && (
+        <p className="not-prose mt-3 text-red text-sm" role="note">
+          ⚠ {project.previewNotice}
+        </p>
+      )}
 
       <h3>Short Description</h3>
       <p>{project.description}</p>

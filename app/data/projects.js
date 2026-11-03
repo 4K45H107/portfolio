@@ -14,6 +14,8 @@ export const projects = [
     tech: ["Next.js", "NestJS", "PostgreSQL", "Redis", "LiveKit", "TypeScript"],
     github: "https://github.com/4K45H107/JOBIFY",
     preview: "https://jobify-hire.vercel.app",
+    previewNotice:
+      "Heads up: the demo runs on free hosting that sleeps when nobody is using it. On your first visit the server can take up to a minute to wake up, so if the page shows an error or keeps loading, wait a few seconds and reload. After that it runs at normal speed.",
     links: [
       {
         label: "Architecture Decisions",
