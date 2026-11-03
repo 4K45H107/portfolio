@@ -19,10 +19,6 @@ export const projects = [
         label: "Architecture Decisions",
         href: "https://github.com/4K45H107/JOBIFY/tree/main/docs/adr",
       },
-      {
-        label: "Original 2024 Project",
-        href: "https://github.com/4K45H107/CSE408_JOBIFY",
-      },
     ],
     description:
       "Jobify is a hiring platform that puts both sides in one app. Job seekers find jobs, apply in one click, take skill tests and join video interviews. Employers post jobs, screen applicants, set multiple-choice or coding tests, and interview candidates while watching them write answers live. It started as our CSE408 team project at BUET in 2024, and I rebuilt it from scratch, taking it from a prototype to a deployed, tested product with a new architecture, backend and database.",
