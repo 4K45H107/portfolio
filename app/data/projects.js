@@ -231,6 +231,54 @@ export const projects = [
     ],
   },
   {
+    slug: "mancala",
+    title: "Mancala AI",
+    subtitle: "Kalah against a minimax AI that shows its reasoning",
+    year: "2023",
+    image: "/images/mancala/card.jpg",
+    tech: ["TypeScript", "React", "Minimax", "Alpha-Beta Pruning", "Web Workers", "GitHub Pages"],
+    github: "https://github.com/4K45H107/mancala",
+    preview: "https://4k45h107.github.io/mancala/",
+    description:
+      "Mancala (Kalah) with a game-playing AI that searches ahead with minimax and alpha-beta pruning and scores positions with four heuristics. Play against it, watch two AIs play each other, play a friend on one screen, or run hundreds of AI-vs-AI games in an arena to compare strategies. The game UI was built in 2026, and the rules, search and UI all run in the browser.",
+    gallery: [
+      { src: "/images/mancala/play-vs-ai.jpg", caption: "Playing the AI, which shows the score it gave each move" },
+      { src: "/images/mancala/ai-vs-ai.jpg", caption: "AI vs AI: H4 against H1, each searching 6 moves ahead" },
+      { src: "/images/mancala/arena.jpg", caption: "Arena: many games between two AI setups, with win and search statistics" },
+    ],
+    stack: [
+      { label: "Language", value: "TypeScript" },
+      { label: "Frontend", value: "React 19 and Vite" },
+      { label: "AI", value: "Minimax with alpha-beta pruning, move ordering and four heuristics, run in a Web Worker" },
+      { label: "Testing", value: "Vitest: rules, search correctness and arena results" },
+      { label: "Hosting", value: "GitHub Pages, deployed by GitHub Actions on every push to main" },
+    ],
+    sections: [
+      {
+        heading: "Features",
+        items: [
+          "Play vs AI at four difficulty levels, searching from 1 to 10 moves ahead, and choose who moves first",
+          "AI vs AI with its own heuristic and search depth for each side, plus play, pause, step and speed control",
+          "Two players on one screen",
+          "Arena: up to 200 games between two AI setups, alternating who moves first, with randomised openings",
+          "An AI reasoning panel showing every move's score, positions searched, branches pruned and time taken",
+          "Animated sowing, captures and end-of-game sweeps, on phones and desktops",
+        ],
+      },
+      {
+        heading: "How It Works",
+        items: [
+          "Minimax looks a fixed number of moves ahead, assuming both players play their best",
+          "Alpha-beta pruning skips branches that cannot change the result, and trying extra-turn and capture moves first makes it cut off sooner",
+          "Extra turns fit naturally into the search: the same player simply moves again in the tree",
+          "Heuristics build on each other: store difference, then stones on each side, extra turns earned, and stones captured",
+          "The search runs in a Web Worker, so the page stays responsive even at depth 10",
+          "Tests check that alpha-beta gives exactly the same scores as plain minimax on 150 random positions while searching fewer",
+        ],
+      },
+    ],
+  },
+  {
     slug: "wifi-video-streaming",
     title: "Wi-Fi Controlled Video Streaming Bot",
     subtitle: "Remote-controlled video streaming robot",
