@@ -183,6 +183,54 @@ export const projects = [
     ],
   },
   {
+    slug: "fourier-drawing",
+    title: "Fourier Drawing",
+    subtitle: "Shapes redrawn by rotating circles with the Fourier transform",
+    year: "2026",
+    image: "/images/fourier/card.jpg",
+    tech: ["JavaScript", "p5.js", "Fourier Transform", "GitHub Pages"],
+    github: "https://github.com/4K45H107/fourier-transformation-drawing",
+    preview: "https://4k45h107.github.io/fourier-transformation-drawing/",
+    description:
+      "An interactive visualizer of Fourier series and the discrete Fourier transform. Rotating circles stacked tip to tail (epicycles) build a square wave from its harmonics, redraw built-in shapes, and redraw anything you draw yourself with the mouse or a finger. Plain JavaScript and p5.js, with no build step, hosted on GitHub Pages.",
+    gallery: [
+      { src: "/images/fourier/freehand.gif", caption: "A music note drawn by hand, then redrawn by the epicycles" },
+      { src: "/images/fourier/square-wave.jpg", caption: "Fourier series: a square wave from its odd harmonics" },
+      { src: "/images/fourier/single-butterfly.jpg", caption: "Single mode: one chain of circles draws the butterfly curve" },
+      { src: "/images/fourier/dual-heart.jpg", caption: "Dual mode: one chain draws x, another draws y" },
+    ],
+    stack: [
+      { label: "Language", value: "Plain JavaScript (no framework, no build step)" },
+      { label: "Graphics", value: "p5.js 1.7.0 on an HTML canvas" },
+      { label: "Math", value: "Fourier series, discrete Fourier transform (real and complex), arc-length resampling" },
+      { label: "Hosting", value: "GitHub Pages, updated on every merge to main" },
+    ],
+    sections: [
+      {
+        heading: "Features",
+        items: [
+          "Square wave built from 1 to 50 odd harmonics, showing the overshoot at the jumps (Gibbs phenomenon)",
+          "Built-in shapes: π, heart, rose, butterfly and circle",
+          "Freehand mode: draw any shape with the mouse or a finger and watch it redrawn",
+          "Single mode (one chain of circles) and dual mode (separate chains for x and y)",
+          "Speed control from 0.25× to 4×, plus pause and reset",
+          "Fits any screen, from phones to large monitors, and refits on resize and rotation",
+        ],
+      },
+      {
+        heading: "How It Works",
+        items: [
+          "A shape is sampled into points and a DFT turns them into frequency components; each becomes a circle with its own radius, speed and starting angle",
+          "Sorted largest first and stacked tip to tail, the circles' combined tip retraces the shape over one full turn",
+          "Single mode treats each point as a complex number x + iy; dual mode transforms x and y separately and the pen sits where the two chains meet",
+          "Freehand strokes are closed into a loop, resampled to evenly spaced points, centred and fitted to the drawing area",
+          "Time moves in whole sample steps, since the DFT matches the shape exactly only at its sample points, so every speed draws the same clean shape",
+          "Everything is drawn in a fixed 1200×700 space and scaled to fit the screen, with pointer input scaled back so drawing lands under your finger",
+        ],
+      },
+    ],
+  },
+  {
     slug: "wifi-video-streaming",
     title: "Wi-Fi Controlled Video Streaming Bot",
     subtitle: "Remote-controlled video streaming robot",
