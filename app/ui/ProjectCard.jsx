@@ -22,7 +22,8 @@ const ProjectCard = ({ project }) => {
           {title}: {subtitle}
         </Link>
         <p className="text-sm text-white-3/[0.6] mt-1">{year}</p>
-        <div className="">
+        {/* Tags wrap onto more lines on narrow screens */}
+        <div className="flex flex-wrap justify-center">
           {tech.map((t, i) => (
             <span className="pr-4 py-2 text-magenta text-sm" key={i}>
               {t}

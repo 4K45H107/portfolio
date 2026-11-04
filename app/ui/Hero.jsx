@@ -1,5 +1,6 @@
 import React from "react";
 import DotBg from "./components/DotBg";
+import ContactMenu from "./components/ContactMenu";
 import Link from "next/link";
 
 const Hero = () => {
@@ -23,16 +24,11 @@ const Hero = () => {
             </p>
           </div>
 
-          <div className="gap-x-12 lg:gap-x-16 mt-16 flex items-center justify-between">
-            <Link
-              href="mailto:fahad11.ahmed11@gmail.com"
-              className="px-8 py-2 text-base md:text-lg rounded border-2 transition duration-300 border-white-3 hover:border-green text-center font-semibold hover:text-green"
-            >
-              Contact
-            </Link>
+          <div className="gap-x-6 sm:gap-x-12 lg:gap-x-16 mt-16 flex items-center justify-between">
+            <ContactMenu />
             <Link
               href="/#projects"
-              className="px-8 py-2 rounded-md bg-green text-black-2 text-base md:text-lg transition duration-300 hover:bg-white-1 border-2 border-transparent hover:border-green font-semibold"
+              className="px-6 sm:px-8 py-2 rounded-md bg-green text-black-2 text-base md:text-lg transition duration-300 hover:bg-white-1 border-2 border-transparent hover:border-green font-semibold"
             >
               Projects
             </Link>
