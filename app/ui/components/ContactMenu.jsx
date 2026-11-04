@@ -33,13 +33,48 @@ const copyText = async (text) => {
   }
 };
 
-const itemClass =
-  "flex w-full items-center gap-x-3 rounded px-3 py-2 text-left transition duration-200 hover:bg-white-3/[0.08] hover:text-green focus-visible:bg-white-3/[0.08] focus-visible:text-green focus-visible:outline-none";
+// Rows share one layout: icon, name, handle. Email adds Copy and Open
+// (Gmail compose) on the right; LinkedIn and GitHub are whole-row links.
+const CONTACTS = [
+  {
+    key: "email",
+    name: "Email",
+    handle: EMAIL,
+    Icon: IoMail,
+    copyText: EMAIL,
+    copyLabel: "Copy email address",
+    openUrl: GMAIL_COMPOSE_URL,
+    openLabel: "Write an email in Gmail",
+  },
+  {
+    key: "linkedin",
+    name: "LinkedIn",
+    handle: LINKEDIN.handle,
+    Icon: IoLogoLinkedin,
+    openUrl: LINKEDIN.url,
+    openLabel: "Open LinkedIn profile",
+  },
+  {
+    key: "github",
+    name: "GitHub",
+    handle: GITHUB.handle,
+    Icon: IoLogoGithub,
+    openUrl: GITHUB.url,
+    openLabel: "Open GitHub profile",
+  },
+];
+
+const rowClass =
+  "flex w-full items-center gap-x-3 rounded px-3 py-2 text-left transition duration-200 hover:bg-white-3/[0.05]";
+
+const actionClass =
+  "flex h-8 w-8 shrink-0 items-center justify-center rounded text-base text-white-3/[0.7] transition duration-200 hover:bg-white-3/[0.1] hover:text-green focus-visible:bg-white-3/[0.1] focus-visible:text-green focus-visible:outline-none";
 
 const ContactMenu = () => {
   const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(null); // key of the row just copied
   const [openUp, setOpenUp] = useState(false);
+  const [shiftX, setShiftX] = useState(0);
   const rootRef = useRef(null);
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
@@ -80,6 +115,14 @@ const ContactMenu = () => {
     const below = window.innerHeight - button.bottom;
     // Below if it fits there; otherwise whichever side has more room
     setOpenUp(below < needed && button.top > below);
+
+    // Nudge sideways if it would spill past either edge of the screen
+    const EDGE = 8;
+    const menu = menuRef.current.getBoundingClientRect();
+    const left = menu.left - shiftX;
+    const right = menu.right - shiftX;
+    const maxRight = document.documentElement.clientWidth - EDGE;
+    setShiftX(right > maxRight ? Math.max(EDGE - left, maxRight - right) : left < EDGE ? EDGE - left : 0);
   }, [open]);
 
   // Move focus into the menu when it opens from the keyboard
@@ -91,7 +134,7 @@ const ContactMenu = () => {
 
   useEffect(() => {
     if (!copied) return undefined;
-    const timer = setTimeout(() => setCopied(false), 2000);
+    const timer = setTimeout(() => setCopied(null), 2000);
     return () => clearTimeout(timer);
   }, [copied]);
 
@@ -99,7 +142,7 @@ const ContactMenu = () => {
   const onMenuKeyDown = (event) => {
     const list = items();
     const index = list.indexOf(document.activeElement);
-    const step = { ArrowDown: 1, ArrowUp: -1 }[event.key];
+    const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[event.key];
     if (step) {
       event.preventDefault();
       list[(index + step + list.length) % list.length]?.focus({ preventScroll: true });
@@ -111,8 +154,8 @@ const ContactMenu = () => {
     }
   };
 
-  const onCopy = async () => {
-    if (await copyText(EMAIL)) setCopied(true);
+  const onCopy = async (contact) => {
+    if (await copyText(contact.copyText)) setCopied(contact.key);
   };
 
   return (
@@ -148,8 +191,9 @@ const ContactMenu = () => {
         role="menu"
         aria-label="Contact options"
         onKeyDown={onMenuKeyDown}
+        style={{ marginLeft: shiftX }}
         className={cn(
-          "absolute z-50 left-0 sm:left-1/2 sm:-translate-x-1/2 w-[min(20rem,calc(100vw-2rem))]",
+          "absolute z-50 left-0 sm:left-1/2 sm:-translate-x-1/2 w-[min(22rem,calc(100vw-2rem))]",
           openUp ? "bottom-full mb-3 origin-bottom" : "top-full mt-3 origin-top",
           "rounded-lg border border-white-3/[0.2] bg-black-3 p-2 text-left text-sm text-white-2 shadow-2xl shadow-black-3/60",
           "transition duration-200",
@@ -158,77 +202,75 @@ const ContactMenu = () => {
             : "invisible opacity-0 -translate-y-1 pointer-events-none"
         )}
       >
-        {/* Email: copy the address, or compose in Gmail */}
-        <div className="px-3 pt-2 pb-1">
-          <p className="flex items-center gap-x-2 text-white-3/[0.7] text-xs uppercase tracking-wider">
-            <IoMail aria-hidden="true" className="text-green" />
-            Email
-          </p>
-          <p className="mt-1 text-white-1 break-all select-all">{EMAIL}</p>
-        </div>
-        <button
-          type="button"
-          role="menuitem"
-          onClick={onCopy}
-          className={itemClass}
-        >
-          {copied ? (
-            <IoCheckmark aria-hidden="true" className="text-green" />
-          ) : (
-            <IoCopyOutline aria-hidden="true" />
-          )}
-          <span className={cn(copied && "text-green")}>
-            {copied ? "Copied!" : "Copy email address"}
-          </span>
-        </button>
-        <a
-          role="menuitem"
-          href={GMAIL_COMPOSE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => close()}
-          className={itemClass}
-        >
-          <IoOpenOutline aria-hidden="true" />
-          Write in Gmail
-        </a>
+        {CONTACTS.map((contact) => {
+          const { key, name, handle, Icon } = contact;
+          const isCopied = copied === key;
+          const details = (
+            <>
+              <Icon aria-hidden="true" className="shrink-0 text-lg text-green" />
+              <span className="min-w-0 flex-1">
+                <span className="block text-white-1">{name}</span>
+                <span className="block truncate text-xs text-white-3/[0.6]" title={handle}>
+                  {handle}
+                </span>
+              </span>
+            </>
+          );
 
-        <div className="my-2 h-px bg-white-3/[0.15]" role="separator" />
+          // LinkedIn and GitHub: the whole row opens the profile
+          if (!contact.copyText) {
+            return (
+              <a
+                key={key}
+                role="menuitem"
+                href={contact.openUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={contact.openLabel}
+                onClick={() => close()}
+                className={cn(rowClass, "group hover:text-green focus-visible:bg-white-3/[0.08] focus-visible:outline-none")}
+              >
+                {details}
+                <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-center justify-center text-base text-white-3/[0.5] transition duration-200 group-hover:text-green">
+                  <IoOpenOutline />
+                </span>
+              </a>
+            );
+          }
 
-        <a
-          role="menuitem"
-          href={LINKEDIN.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => close()}
-          className={itemClass}
-        >
-          <IoLogoLinkedin aria-hidden="true" className="text-lg" />
-          <span className="flex-1">
-            LinkedIn
-            <span className="block text-xs text-white-3/[0.6]">
-              {LINKEDIN.handle}
-            </span>
-          </span>
-          <IoOpenOutline aria-hidden="true" className="text-white-3/[0.5]" />
-        </a>
-        <a
-          role="menuitem"
-          href={GITHUB.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => close()}
-          className={itemClass}
-        >
-          <IoLogoGithub aria-hidden="true" className="text-lg" />
-          <span className="flex-1">
-            GitHub
-            <span className="block text-xs text-white-3/[0.6]">
-              {GITHUB.handle}
-            </span>
-          </span>
-          <IoOpenOutline aria-hidden="true" className="text-white-3/[0.5]" />
-        </a>
+          // Email: copy the address, or write in Gmail
+          return (
+            <div key={key} className={rowClass}>
+              {details}
+              <button
+                type="button"
+                role="menuitem"
+                aria-label={isCopied ? "Copied" : contact.copyLabel}
+                title={isCopied ? "Copied!" : contact.copyLabel}
+                onClick={() => onCopy(contact)}
+                className={cn(actionClass, isCopied && "text-green")}
+              >
+                {isCopied ? (
+                  <IoCheckmark aria-hidden="true" />
+                ) : (
+                  <IoCopyOutline aria-hidden="true" />
+                )}
+              </button>
+              <a
+                role="menuitem"
+                href={contact.openUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={contact.openLabel}
+                title={contact.openLabel}
+                onClick={() => close()}
+                className={actionClass}
+              >
+                <IoOpenOutline aria-hidden="true" />
+              </a>
+            </div>
+          );
+        })}
 
         {/* Announce the copy result to screen readers */}
         <span className="sr-only" aria-live="polite">
